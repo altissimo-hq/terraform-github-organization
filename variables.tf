@@ -18,7 +18,6 @@ variable "organization" {
 variable "repositories" {
   description = "Map of GitHub Repos to Create"
   type = map(object({
-    cname                = optional(string)
     description          = optional(string)
     gitignore_template   = optional(string)
     has_downloads        = optional(bool)
@@ -28,6 +27,7 @@ variable "repositories" {
     homepage_url         = optional(string)
     license_template     = optional(string)
     pages                = optional(bool)
+    pages_cname          = optional(string)
     visibility           = optional(string)
     vulnerability_alerts = optional(bool)
   }))
