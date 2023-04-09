@@ -31,6 +31,7 @@ variable "repositories" {
     visibility           = optional(string)
     vulnerability_alerts = optional(bool)
   }))
+  default = {}
 }
 
 variable "settings" {
@@ -67,6 +68,7 @@ variable "settings" {
     secret_scanning_push_protection_enabled_for_new_repositories = optional(bool)
 
   })
+  default = null
 }
 
 variable "teams" {
@@ -81,6 +83,7 @@ variable "teams" {
     maintainers = optional(list(string))
     members     = optional(list(string))
   }))
+  default = {}
 }
 
 variable "token" {

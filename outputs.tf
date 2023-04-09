@@ -2,7 +2,6 @@
 #   value = data.github_organization.org
 # }
 
-
 output "description" {
   description = "GitHub Organization Description"
   value       = data.github_organization.org.description

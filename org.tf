@@ -3,6 +3,7 @@ data "github_organization" "org" {
 }
 
 resource "github_organization_settings" "org" {
+  count            = var.settings == null ? 0 : 1
   billing_email    = var.settings.billing_email
   company          = var.settings.company
   blog             = var.settings.blog
