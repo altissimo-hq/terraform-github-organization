@@ -19,6 +19,8 @@ No modules.
 
 | Name | Type |
 |------|------|
+| [github_membership.admins](https://registry.terraform.io/providers/integrations/github/5.21.1/docs/resources/membership) | resource |
+| [github_membership.members](https://registry.terraform.io/providers/integrations/github/5.21.1/docs/resources/membership) | resource |
 | [github_organization_settings.org](https://registry.terraform.io/providers/integrations/github/5.21.1/docs/resources/organization_settings) | resource |
 | [github_repository.repo](https://registry.terraform.io/providers/integrations/github/5.21.1/docs/resources/repository) | resource |
 | [github_team.team](https://registry.terraform.io/providers/integrations/github/5.21.1/docs/resources/team) | resource |
