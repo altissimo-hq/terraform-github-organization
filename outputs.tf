@@ -1,6 +1,6 @@
-# output "github_organization" {
-#   value = data.github_organization.org
-# }
+output "github_organization" {
+  value = data.github_organization.org
+}
 
 output "description" {
   description = "GitHub Organization Description"

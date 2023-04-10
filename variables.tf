@@ -19,17 +19,17 @@ variable "repositories" {
   description = "Map of GitHub Repos to Create"
   type = map(object({
     description          = optional(string)
-    gitignore_template   = optional(string)
-    has_downloads        = optional(bool)
+    homepage_url         = optional(string)
+    visibility           = optional(string)
+    has_downloads        = optional(bool) # deprecated
     has_issues           = optional(bool)
     has_projects         = optional(bool)
     has_wiki             = optional(bool)
-    homepage_url         = optional(string)
+    gitignore_template   = optional(string)
     license_template     = optional(string)
+    vulnerability_alerts = optional(bool)
     pages                = optional(bool)
     pages_cname          = optional(string)
-    visibility           = optional(string)
-    vulnerability_alerts = optional(bool)
   }))
   default = {}
 }
