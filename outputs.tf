@@ -1,7 +1,3 @@
-output "github_organization" {
-  value = data.github_organization.org
-}
-
 output "description" {
   description = "GitHub Organization Description"
   value       = data.github_organization.org.description
@@ -25,6 +21,10 @@ output "members" {
 output "name" {
   description = "GitHub Organization Name"
   value       = data.github_organization.org.name
+}
+
+output "organization" {
+  value = data.github_organization.org
 }
 
 output "plan" {
