@@ -24,7 +24,13 @@ output "name" {
 }
 
 output "organization" {
-  value = data.github_organization.org
+  description = "GitHub Organization Resource"
+  value       = data.github_organization.org
+}
+
+output "organization_teams" {
+  description = "GitHub Organization Team Resource"
+  value       = data.github_organization_teams.org
 }
 
 output "plan" {

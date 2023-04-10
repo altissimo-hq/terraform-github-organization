@@ -50,7 +50,8 @@ No modules.
 | <a name="output_login"></a> [login](#output\_login) | GitHub Organization Login |
 | <a name="output_members"></a> [members](#output\_members) | GitHub Organization Members |
 | <a name="output_name"></a> [name](#output\_name) | GitHub Organization Name |
-| <a name="output_organization"></a> [organization](#output\_organization) | n/a |
+| <a name="output_organization"></a> [organization](#output\_organization) | GitHub Organization Resource |
+| <a name="output_organization_teams"></a> [organization\_teams](#output\_organization\_teams) | GitHub Organization Team Resource |
 | <a name="output_plan"></a> [plan](#output\_plan) | GitHub Organization Plan |
 | <a name="output_private_repositories"></a> [private\_repositories](#output\_private\_repositories) | GitHub Organization Private Repositories |
 | <a name="output_public_repositories"></a> [public\_repositories](#output\_public\_repositories) | GitHub Organization Public Repositories |
