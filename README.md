@@ -9,7 +9,7 @@
 
 | Name | Version |
 |------|---------|
-| <a name="provider_github"></a> [github](#provider\_github) | 5.16.0 |
+| <a name="provider_github"></a> [github](#provider\_github) | 5.21.1 |
 
 ## Modules
 
@@ -27,6 +27,7 @@ No modules.
 | [github_team_members.admins](https://registry.terraform.io/providers/integrations/github/latest/docs/resources/team_members) | resource |
 | [github_organization.org](https://registry.terraform.io/providers/integrations/github/latest/docs/data-sources/organization) | data source |
 | [github_organization_teams.org](https://registry.terraform.io/providers/integrations/github/latest/docs/data-sources/organization_teams) | data source |
+| [github_repositories.org](https://registry.terraform.io/providers/integrations/github/latest/docs/data-sources/repositories) | data source |
 | [github_repository.repo](https://registry.terraform.io/providers/integrations/github/latest/docs/data-sources/repository) | data source |
 
 ## Inputs
@@ -56,6 +57,8 @@ No modules.
 | <a name="output_private_repositories"></a> [private\_repositories](#output\_private\_repositories) | GitHub Organization Private Repositories |
 | <a name="output_public_repositories"></a> [public\_repositories](#output\_public\_repositories) | GitHub Organization Public Repositories |
 | <a name="output_repositories"></a> [repositories](#output\_repositories) | GitHub Organization Repositories |
+| <a name="output_repository_resources"></a> [repository\_resources](#output\_repository\_resources) | GitHub Organization Repository Resources |
+| <a name="output_team_resources"></a> [team\_resources](#output\_team\_resources) | GitHub Organization Team Resources |
 | <a name="output_teams"></a> [teams](#output\_teams) | GitHub Organization Teams |
 | <a name="output_unmanaged_members"></a> [unmanaged\_members](#output\_unmanaged\_members) | GitHub Organization Unmanaged Members |
 | <a name="output_unmanaged_repositories"></a> [unmanaged\_repositories](#output\_unmanaged\_repositories) | GitHub Organization Unmanaged Repositories |

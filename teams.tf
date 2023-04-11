@@ -10,7 +10,6 @@ resource "github_team" "team" {
   create_default_maintainer = coalesce(each.value.create_default_maintainer, false)
 }
 
-
 resource "github_team_members" "admins" {
   for_each = var.teams
   team_id  = github_team.team[each.key].id

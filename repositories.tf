@@ -3,6 +3,11 @@ data "github_repository" "repo" {
   name     = each.key
 }
 
+data "github_repositories" "org" {
+  query           = "org:${var.organization}"
+  include_repo_id = true
+}
+
 resource "github_repository" "repo" {
   for_each = var.repositories
   name     = each.key

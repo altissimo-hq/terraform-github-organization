@@ -53,9 +53,19 @@ output "repositories" {
   value       = local.repositories
 }
 
+output "repository_resources" {
+  description = "GitHub Organization Repository Resources"
+  value       = data.github_repository.repo
+}
+
 output "teams" {
   description = "GitHub Organization Teams"
   value       = local.teams
+}
+
+output "team_resources" {
+  description = "GitHub Organization Team Resources"
+  value       = data.github_organization_teams.org
 }
 
 output "unmanaged_members" {

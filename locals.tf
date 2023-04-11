@@ -18,7 +18,7 @@ locals {
   # Get the list of repos from the GitHub Organization
   repositories = sort([for repo in data.github_organization.org.repositories : replace(repo, "${var.organization}/", "")])
 
-  # Get the list of teams from the GitHub Organization
-  teams = sort(data.github_organization_teams.org.teams[*].slug)
+  # Get the list of team names from the GitHub Organization Teams resource
+  teams = sort(data.github_organization_teams.org.teams[*].name)
 
 }
