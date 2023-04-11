@@ -36,4 +36,6 @@ resource "github_repository" "repo" {
       }
     }
   }
+
+  topics = coalesce(each.value.topics, [])
 }

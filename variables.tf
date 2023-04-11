@@ -30,6 +30,7 @@ variable "repositories" {
     vulnerability_alerts = optional(bool)
     pages                = optional(bool)
     pages_cname          = optional(string)
+    topics               = optional(list(string))
   }))
   default = {}
 }
