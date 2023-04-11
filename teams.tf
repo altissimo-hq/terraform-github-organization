@@ -15,7 +15,7 @@ resource "github_team_members" "admins" {
   team_id  = github_team.team[each.key].id
 
   dynamic "members" {
-    for_each = toset(each.value.members)
+    for_each = toset(coalesce(each.value.members, []))
     content {
       username = members.key
       role     = "member"
@@ -23,7 +23,7 @@ resource "github_team_members" "admins" {
   }
 
   dynamic "members" {
-    for_each = toset(each.value.maintainers)
+    for_each = toset(coalesce(each.value.maintainers, []))
     content {
       username = members.key
       role     = "maintainer"
