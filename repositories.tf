@@ -29,10 +29,10 @@ resource "github_repository" "repo" {
   dynamic "pages" {
     for_each = coalesce(each.value.pages, false) ? toset([1]) : toset([])
     content {
-      cname = coalesce(each.value.pages_cname, "")
+      cname = try(each.value.pages_cname, "")
       source {
         branch = "main"
-        path   = "/docs"
+        path   = coalesce(each.value.pages_path, "/docs")
       }
     }
   }
