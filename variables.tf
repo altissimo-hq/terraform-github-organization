@@ -32,6 +32,7 @@ variable "repositories" {
     pages_cname          = optional(string)
     pages_path           = optional(string)
     topics               = optional(list(string))
+    teams                = optional(map(string)) # team name -> permission (pull, push, maintain, admin)
   }))
   default = {}
 }
