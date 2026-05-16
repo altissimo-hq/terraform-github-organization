@@ -25,7 +25,35 @@ output "name" {
 
 output "organization" {
   description = "GitHub Organization Resource"
-  value       = data.github_organization.org
+  value = {
+    id                                                           = data.github_organization.org.id
+    node_id                                                      = data.github_organization.org.node_id
+    name                                                         = data.github_organization.org.name
+    orgname                                                      = data.github_organization.org.orgname
+    login                                                        = data.github_organization.org.login
+    description                                                  = data.github_organization.org.description
+    plan                                                         = data.github_organization.org.plan
+    repositories                                                 = data.github_organization.org.repositories
+    users                                                        = data.github_organization.org.users
+    default_repository_permission                                = data.github_organization.org.default_repository_permission
+    members_can_create_repositories                              = data.github_organization.org.members_can_create_repositories
+    members_allowed_repository_creation_type                     = data.github_organization.org.members_allowed_repository_creation_type
+    members_can_create_public_repositories                       = data.github_organization.org.members_can_create_public_repositories
+    members_can_create_private_repositories                      = data.github_organization.org.members_can_create_private_repositories
+    members_can_create_internal_repositories                     = data.github_organization.org.members_can_create_internal_repositories
+    members_can_create_pages                                     = data.github_organization.org.members_can_create_pages
+    members_can_create_public_pages                              = data.github_organization.org.members_can_create_public_pages
+    members_can_create_private_pages                             = data.github_organization.org.members_can_create_private_pages
+    members_can_fork_private_repositories                        = data.github_organization.org.members_can_fork_private_repositories
+    two_factor_requirement_enabled                               = data.github_organization.org.two_factor_requirement_enabled
+    web_commit_signoff_required                                  = data.github_organization.org.web_commit_signoff_required
+    advanced_security_enabled_for_new_repositories               = data.github_organization.org.advanced_security_enabled_for_new_repositories
+    dependabot_alerts_enabled_for_new_repositories               = data.github_organization.org.dependabot_alerts_enabled_for_new_repositories
+    dependabot_security_updates_enabled_for_new_repositories     = data.github_organization.org.dependabot_security_updates_enabled_for_new_repositories
+    dependency_graph_enabled_for_new_repositories                = data.github_organization.org.dependency_graph_enabled_for_new_repositories
+    secret_scanning_enabled_for_new_repositories                 = data.github_organization.org.secret_scanning_enabled_for_new_repositories
+    secret_scanning_push_protection_enabled_for_new_repositories = data.github_organization.org.secret_scanning_push_protection_enabled_for_new_repositories
+  }
 }
 
 output "organization_teams" {
