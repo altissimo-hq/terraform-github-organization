@@ -33,6 +33,7 @@ variable "repositories" {
     pages_path           = optional(string)
     topics               = optional(list(string))
     teams                = optional(map(string)) # team name -> permission (pull, push, maintain, admin)
+    allow_auto_merge     = optional(bool)
   }))
   default = {}
 }

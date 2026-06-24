@@ -25,6 +25,7 @@ resource "github_repository" "repo" {
   license_template   = each.value.license_template
 
   vulnerability_alerts = coalesce(each.value.vulnerability_alerts, true)
+  allow_auto_merge     = coalesce(each.value.allow_auto_merge, false)
 
   dynamic "pages" {
     for_each = coalesce(each.value.pages, false) ? toset([1]) : toset([])
