@@ -23,7 +23,7 @@ jobs:
         github_version: ['5.19.0', 'latest']
     steps:
       - uses: actions/checkout@v7
-      - uses: hashicorp/setup-terraform@v3
+      - uses: hashicorp/setup-terraform@v4
       - name: Pin github provider version for this run
         run: |
           if [ "${{ matrix.github_version }}" = "latest" ]; then
