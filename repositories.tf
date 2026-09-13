@@ -27,6 +27,12 @@ resource "github_repository" "repo" {
   vulnerability_alerts = coalesce(each.value.vulnerability_alerts, true)
   allow_auto_merge     = coalesce(each.value.allow_auto_merge, false)
 
+  allow_merge_commit          = coalesce(each.value.allow_merge_commit, true)
+  allow_rebase_merge          = coalesce(each.value.allow_rebase_merge, true)
+  allow_squash_merge          = coalesce(each.value.allow_squash_merge, true)
+  squash_merge_commit_title   = coalesce(each.value.squash_merge_commit_title, "PR_TITLE")
+  squash_merge_commit_message = coalesce(each.value.squash_merge_commit_message, "PR_BODY")
+
   dynamic "pages" {
     for_each = coalesce(each.value.pages, false) ? toset([1]) : toset([])
     content {
