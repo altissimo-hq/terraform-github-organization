@@ -1,0 +1,43 @@
+name: validate
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches:
+      - main
+
+concurrency:
+  group: '${{ github.workflow }}-${{ github.head_ref || github.ref }}'
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    name: 'terraform validate (github ${{ matrix.github_version }})'
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        github_version: ['5.19.0', 'latest']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: hashicorp/setup-terraform@v3
+      - name: Pin github provider version for this run
+        run: |
+          if [ "${{ matrix.github_version }}" = "latest" ]; then
+            CONSTRAINT="> 0"
+          else
+            CONSTRAINT="= ${{ matrix.github_version }}"
+          fi
+          cat > override.tf <<EOF
+          terraform {
+            required_providers {
+              github = {
+                source  = "integrations/github"
+                version = "${CONSTRAINT}"
+              }
+            }
+          }
+          EOF
+      - run: terraform fmt -check -recursive
+      - run: terraform init -backend=false
+      - run: terraform validate
