@@ -20,7 +20,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        github_version: ['5.19.0', 'latest']
+        github_version: ['6.0.0', 'latest']
     steps:
       - uses: actions/checkout@v7
       - uses: hashicorp/setup-terraform@v4
