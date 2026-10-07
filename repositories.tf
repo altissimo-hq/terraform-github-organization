@@ -16,16 +16,14 @@ resource "github_repository" "repo" {
   homepage_url = each.value.homepage_url
   visibility   = coalesce(each.value.visibility, "private")
 
-  has_downloads = coalesce(each.value.has_downloads, true) # deprecated
-  has_issues    = coalesce(each.value.has_issues, true)
-  has_projects  = coalesce(each.value.has_projects, true)
-  has_wiki      = coalesce(each.value.has_wiki, false)
+  has_issues   = coalesce(each.value.has_issues, true)
+  has_projects = coalesce(each.value.has_projects, true)
+  has_wiki     = coalesce(each.value.has_wiki, false)
 
   gitignore_template = each.value.gitignore_template
   license_template   = each.value.license_template
 
-  vulnerability_alerts = coalesce(each.value.vulnerability_alerts, true)
-  allow_auto_merge     = coalesce(each.value.allow_auto_merge, false)
+  allow_auto_merge = coalesce(each.value.allow_auto_merge, false)
 
   allow_merge_commit          = coalesce(each.value.allow_merge_commit, true)
   allow_rebase_merge          = coalesce(each.value.allow_rebase_merge, true)
@@ -45,4 +43,21 @@ resource "github_repository" "repo" {
   }
 
   topics = coalesce(each.value.topics, [])
+
+  lifecycle {
+    # GitHub retired the Downloads feature and ignores writes to has_downloads, so
+    # managing it produces a perpetual diff. The provider still reads it back from
+    # the API, so it must be ignored rather than merely left unset. Remove this
+    # once the provider drops the attribute.
+    ignore_changes = [has_downloads]
+  }
+}
+
+# vulnerability_alerts on github_repository is deprecated since provider 6.12 in
+# favour of this resource. The attribute is computed, so dropping it from the
+# resource above causes no diff; this resource takes over the setting.
+resource "github_repository_vulnerability_alerts" "repo" {
+  for_each   = var.repositories
+  repository = github_repository.repo[each.key].name
+  enabled    = coalesce(each.value.vulnerability_alerts, true)
 }

@@ -21,7 +21,6 @@ variable "repositories" {
     description          = optional(string)
     homepage_url         = optional(string)
     visibility           = optional(string)
-    has_downloads        = optional(bool) # deprecated
     has_issues           = optional(bool)
     has_projects         = optional(bool)
     has_wiki             = optional(bool)
