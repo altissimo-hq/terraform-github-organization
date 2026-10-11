@@ -3,7 +3,7 @@
 
 | Name | Version |
 | ---- | ------- |
-| <a name="requirement_github"></a> [github](#requirement\_github) | >= 6.12 |
+| <a name="requirement_github"></a> [github](#requirement\_github) | >= 6.13 |
 
 ## Providers
 
