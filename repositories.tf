@@ -23,24 +23,14 @@ resource "github_repository" "repo" {
   gitignore_template = each.value.gitignore_template
   license_template   = each.value.license_template
 
-  allow_auto_merge = coalesce(each.value.allow_auto_merge, false)
+  allow_auto_merge       = coalesce(each.value.allow_auto_merge, false)
+  delete_branch_on_merge = coalesce(each.value.delete_branch_on_merge, false)
 
   allow_merge_commit          = coalesce(each.value.allow_merge_commit, true)
   allow_rebase_merge          = coalesce(each.value.allow_rebase_merge, true)
   allow_squash_merge          = coalesce(each.value.allow_squash_merge, true)
   squash_merge_commit_title   = coalesce(each.value.squash_merge_commit_title, "PR_TITLE")
   squash_merge_commit_message = coalesce(each.value.squash_merge_commit_message, "PR_BODY")
-
-  dynamic "pages" {
-    for_each = coalesce(each.value.pages, false) ? toset([1]) : toset([])
-    content {
-      cname = try(each.value.pages_cname, "")
-      source {
-        branch = "main"
-        path   = coalesce(each.value.pages_path, "/docs")
-      }
-    }
-  }
 
   topics = coalesce(each.value.topics, [])
 
@@ -49,7 +39,27 @@ resource "github_repository" "repo" {
     # managing it produces a perpetual diff. The provider still reads it back from
     # the API, so it must be ignored rather than merely left unset. Remove this
     # once the provider drops the attribute.
-    ignore_changes = [has_downloads]
+    #
+    # The inline pages block is deprecated since provider 6.13 in favour of
+    # github_repository_pages below. The provider disables Pages when the block
+    # disappears from config, so the attribute must be ignored here.
+    ignore_changes = [has_downloads, pages]
+  }
+}
+
+# Repositories with pages = true get a GitHub Pages site published from the
+# main branch. A repository whose Pages site already exists must be imported
+# (terraform import ... <repo-name>) before this resource is applied, because
+# the provider's create path fails if Pages are already enabled.
+resource "github_repository_pages" "repo" {
+  for_each   = { for name, repo in var.repositories : name => repo if coalesce(repo.pages, false) }
+  repository = github_repository.repo[each.key].name
+  build_type = "legacy"
+  cname      = each.value.pages_cname
+
+  source {
+    branch = "main"
+    path   = coalesce(each.value.pages_path, "/docs")
   }
 }
 

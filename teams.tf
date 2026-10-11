@@ -6,13 +6,12 @@ resource "github_team" "team" {
   description = coalesce(each.value.description, each.key)
   privacy     = coalesce(each.value.privacy, "secret")
 
-  parent_team_id            = each.value.parent_team_id
-  create_default_maintainer = coalesce(each.value.create_default_maintainer, false)
+  parent_team_id = each.value.parent_team_id
 }
 
 resource "github_team_members" "team" {
-  for_each = var.teams
-  team_id  = github_team.team[each.key].id
+  for_each  = var.teams
+  team_slug = github_team.team[each.key].slug
 
   dynamic "members" {
     for_each = toset(coalesce(each.value.members, []))

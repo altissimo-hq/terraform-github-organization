@@ -32,6 +32,7 @@ variable "repositories" {
     allow_merge_commit          = optional(bool)
     allow_rebase_merge          = optional(bool)
     allow_squash_merge          = optional(bool)
+    delete_branch_on_merge      = optional(bool)
     squash_merge_commit_title   = optional(string)
     squash_merge_commit_message = optional(string)
     pages                       = optional(bool)
@@ -86,8 +87,6 @@ variable "teams" {
     description    = optional(string)
     privacy        = optional(string)
     parent_team_id = optional(string)
-
-    create_default_maintainer = optional(bool)
 
     maintainers = optional(list(string))
     members     = optional(list(string))
