@@ -34,6 +34,12 @@ resource "github_repository" "repo" {
 
   topics = coalesce(each.value.topics, [])
 
+  # The provider skips updates to an archived repository rather than failing, so
+  # an archived repo can stay in the map. archive_on_destroy defaults to true so
+  # that removing a repo from the map archives it instead of deleting it.
+  archived           = coalesce(each.value.archived, false)
+  archive_on_destroy = coalesce(each.value.archive_on_destroy, true)
+
   lifecycle {
     # GitHub retired the Downloads feature and ignores writes to has_downloads, so
     # managing it produces a perpetual diff. The provider still reads it back from
@@ -66,8 +72,11 @@ resource "github_repository_pages" "repo" {
 # vulnerability_alerts on github_repository is deprecated since provider 6.12 in
 # favour of this resource. The attribute is computed, so dropping it from the
 # resource above causes no diff; this resource takes over the setting.
+#
+# Archived repositories are excluded: the provider's read fails on an archived
+# repo, and its delete tolerates one, so archiving drops this resource cleanly.
 resource "github_repository_vulnerability_alerts" "repo" {
-  for_each   = var.repositories
+  for_each   = { for name, repo in var.repositories : name => repo if !coalesce(repo.archived, false) }
   repository = github_repository.repo[each.key].name
   enabled    = coalesce(each.value.vulnerability_alerts, true)
 }

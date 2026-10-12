@@ -40,6 +40,9 @@ variable "repositories" {
     pages_path                  = optional(string)
     topics                      = optional(list(string))
     teams                       = optional(map(string)) # team name -> permission (pull, push, maintain, admin)
+
+    archived           = optional(bool) # GitHub cannot unarchive via the API; this is one-way
+    archive_on_destroy = optional(bool) # defaults to true: removing a repo from the map archives it
   }))
   default = {}
 }
