@@ -1,0 +1,25 @@
+# Describes this module to Backstage (https://backstage.altissimo.io), which
+# discovers it hourly. Same shape as altissimo-hq/backstage's catalog-info.yaml.
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: terraform-github-organization
+  namespace: altissimo
+  description: Manages a GitHub Organization, Members, Teams, and Repositories
+  annotations:
+    github.com/project-slug: altissimo-hq/terraform-github-organization
+    altissimo.io/terraform-registry: altissimo-hq/organization/github
+  tags:
+    - github
+    - organization
+    - terraform
+    - terraform-modules
+  links:
+    - url: https://registry.terraform.io/modules/altissimo-hq/organization/github/latest
+      title: Terraform Registry
+      icon: web
+spec:
+  type: terraform-module
+  lifecycle: production
+  owner: group:default/altissimo-agent
+  system: altissimo/terraform-modules
