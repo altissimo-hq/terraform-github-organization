@@ -19,6 +19,7 @@ variable "repositories" {
   description = "Map of GitHub Repos to Create"
   type = map(object({
     description          = optional(string)
+    default_branch       = optional(string) # unmanaged when unset; the branch must already exist
     homepage_url         = optional(string)
     visibility           = optional(string)
     has_issues           = optional(bool)
