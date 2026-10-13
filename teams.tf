@@ -29,3 +29,11 @@ resource "github_team_members" "team" {
     }
   }
 }
+
+# Renamed from "admins" in v1.0.11 with the same for_each keys. Without this,
+# consumers upgrading from <= v1.0.10 would destroy and recreate every team's
+# membership, and the destroy strips each team's members.
+moved {
+  from = github_team_members.admins
+  to   = github_team_members.team
+}
