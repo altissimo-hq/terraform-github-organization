@@ -9,7 +9,7 @@
 
 | Name | Version |
 | ---- | ------- |
-| <a name="provider_github"></a> [github](#provider\_github) | 6.13.0 |
+| <a name="provider_github"></a> [github](#provider\_github) | >= 6.13 |
 
 ## Modules
 
@@ -67,3 +67,58 @@ No modules.
 | <a name="output_unmanaged_repositories"></a> [unmanaged\_repositories](#output\_unmanaged\_repositories) | GitHub Organization Unmanaged Repositories |
 | <a name="output_unmanaged_teams"></a> [unmanaged\_teams](#output\_unmanaged\_teams) | GitHub Organization Unmanaged Teams |
 <!-- END_TF_DOCS -->
+
+## Upgrading from v1.0.10 or earlier
+
+Upgrade straight to v1.0.21 or later. Several releases since v1.0.10 move
+resources around in state, and v1.0.21 is the first that handles all of them.
+Work through these steps, then read the plan carefully before applying.
+
+1. **Team memberships (v1.0.11).** `github_team_members.admins` was renamed to
+   `github_team_members.team`. v1.0.21 carries a `moved` block for this, so
+   there is nothing to do. On an older version, the plan destroys and recreates
+   every team's membership; don't apply it.
+
+2. **Archived repositories (v1.0.20).** Set `archived = true` on every
+   repository in the map that is already archived on GitHub. If the repository
+   was archived outside Terraform and has a vulnerability alerts entry in state
+   (v1.0.17 or later only), remove that entry first, because refreshing it fails
+   on an archived repository:
+
+   ```sh
+   terraform state rm 'module.organization.github_repository_vulnerability_alerts.repo["<repo>"]'
+   ```
+
+3. **GitHub Pages (v1.0.18).** Pages moved from an inline block on
+   `github_repository` to a separate `github_repository_pages` resource. Import
+   it for every repository with `pages = true`, or the create fails because the
+   Pages site already exists. Add this to the root module (Terraform 1.7 or
+   later for `for_each` on `import`) and remove it after the apply:
+
+   ```hcl
+   import {
+     for_each = toset(["<repo-with-pages>"])
+     to       = module.organization.github_repository_pages.repo[each.key]
+     id       = each.key
+   }
+   ```
+
+4. **Vulnerability alerts (v1.0.17).** These moved to a separate
+   `github_repository_vulnerability_alerts` resource. The plan shows one create
+   per non-archived repository. That is expected: enabling alerts is
+   idempotent, so no import is needed.
+
+5. **Removed inputs.** `has_downloads` (repositories) and
+   `create_default_maintainer` (teams) are no longer read. Terraform discards
+   them silently, so delete them from your configuration to avoid confusion.
+
+6. **Newly managed merge settings.** `allow_auto_merge`, `allow_merge_commit`,
+   `allow_rebase_merge`, `allow_squash_merge`, `delete_branch_on_merge`,
+   `squash_merge_commit_title` and `squash_merge_commit_message` are now
+   managed, with defaults. Any repository whose current settings differ from
+   the defaults shows an update. Set the input explicitly to keep the current
+   behaviour.
+
+7. **Archive on destroy (v1.0.20).** Every repository shows an in-place update
+   setting `archive_on_destroy = true`. From then on, removing a repository from
+   the map archives it instead of deleting it.
