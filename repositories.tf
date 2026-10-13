@@ -53,10 +53,23 @@ resource "github_repository" "repo" {
   }
 }
 
-# Repositories with pages = true get a GitHub Pages site published from the
-# main branch. A repository whose Pages site already exists must be imported
-# (terraform import ... <repo-name>) before this resource is applied, because
-# the provider's create path fails if Pages are already enabled.
+# default_branch on github_repository is deprecated in favour of this resource.
+# It is only created for repositories that set default_branch: the branch must
+# already exist, and repos here are created without auto_init, so a new repo
+# may have no branches yet. For an existing repo whose default branch already
+# matches, create writes nothing, so adopting it needs no import. Delete only
+# drops it from state, so unsetting default_branch never changes the repo.
+resource "github_branch_default" "repo" {
+  for_each   = { for name, repo in var.repositories : name => repo if repo.default_branch != null }
+  repository = github_repository.repo[each.key].name
+  branch     = each.value.default_branch
+}
+
+# Repositories with pages = true get a GitHub Pages site published from their
+# default_branch, or main if it is unset. A repository whose Pages site already
+# exists must be imported (terraform import ... <repo-name>) before this
+# resource is applied, because the provider's create path fails if Pages are
+# already enabled.
 resource "github_repository_pages" "repo" {
   for_each   = { for name, repo in var.repositories : name => repo if coalesce(repo.pages, false) }
   repository = github_repository.repo[each.key].name
@@ -64,7 +77,7 @@ resource "github_repository_pages" "repo" {
   cname      = each.value.pages_cname
 
   source {
-    branch = "main"
+    branch = coalesce(each.value.default_branch, "main")
     path   = coalesce(each.value.pages_path, "/docs")
   }
 }
