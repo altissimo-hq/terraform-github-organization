@@ -3,6 +3,9 @@ locals {
   # Get the list of user logins from the GitHub organization
   members = sort(data.github_organization.org.users[*].login)
 
+  # Get the list of outside collaborator logins from the GitHub REST API
+  outside_collaborators = sort(jsondecode(data.github_rest_api.outside_collaborators.body)[*].login)
+
   # Get the list of private repos from the GitHub Organization
   private_repositories = sort([
     for repo in local.repositories : repo

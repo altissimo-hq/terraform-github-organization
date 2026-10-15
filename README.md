@@ -24,6 +24,7 @@ No modules.
 | [github_membership.members](https://registry.terraform.io/providers/integrations/github/latest/docs/resources/membership) | resource |
 | [github_organization_settings.org](https://registry.terraform.io/providers/integrations/github/latest/docs/resources/organization_settings) | resource |
 | [github_repository.repo](https://registry.terraform.io/providers/integrations/github/latest/docs/resources/repository) | resource |
+| [github_repository_collaborator.collaborator](https://registry.terraform.io/providers/integrations/github/latest/docs/resources/repository_collaborator) | resource |
 | [github_repository_pages.repo](https://registry.terraform.io/providers/integrations/github/latest/docs/resources/repository_pages) | resource |
 | [github_repository_vulnerability_alerts.repo](https://registry.terraform.io/providers/integrations/github/latest/docs/resources/repository_vulnerability_alerts) | resource |
 | [github_team.team](https://registry.terraform.io/providers/integrations/github/latest/docs/resources/team) | resource |
@@ -33,6 +34,7 @@ No modules.
 | [github_organization_teams.org](https://registry.terraform.io/providers/integrations/github/latest/docs/data-sources/organization_teams) | data source |
 | [github_repositories.org](https://registry.terraform.io/providers/integrations/github/latest/docs/data-sources/repositories) | data source |
 | [github_repository.repo](https://registry.terraform.io/providers/integrations/github/latest/docs/data-sources/repository) | data source |
+| [github_rest_api.outside_collaborators](https://registry.terraform.io/providers/integrations/github/latest/docs/data-sources/rest_api) | data source |
 
 ## Inputs
 
@@ -41,7 +43,7 @@ No modules.
 | <a name="input_admins"></a> [admins](#input\_admins) | Map of GitHub Organization Admins | `list(string)` | `[]` | no |
 | <a name="input_members"></a> [members](#input\_members) | Map of GitHub Organization Members | `list(string)` | `[]` | no |
 | <a name="input_organization"></a> [organization](#input\_organization) | GitHub Organization Name | `string` | n/a | yes |
-| <a name="input_repositories"></a> [repositories](#input\_repositories) | Map of GitHub Repos to Create | <pre>map(object({<br/>    description          = optional(string)<br/>    default_branch       = optional(string) # unmanaged when unset; the branch must already exist<br/>    homepage_url         = optional(string)<br/>    visibility           = optional(string)<br/>    has_issues           = optional(bool)<br/>    has_projects         = optional(bool)<br/>    has_wiki             = optional(bool)<br/>    gitignore_template   = optional(string)<br/>    license_template     = optional(string)<br/>    vulnerability_alerts = optional(bool)<br/><br/>    allow_auto_merge            = optional(bool)<br/>    allow_merge_commit          = optional(bool)<br/>    allow_rebase_merge          = optional(bool)<br/>    allow_squash_merge          = optional(bool)<br/>    delete_branch_on_merge      = optional(bool)<br/>    squash_merge_commit_title   = optional(string)<br/>    squash_merge_commit_message = optional(string)<br/>    pages                       = optional(bool)<br/>    pages_cname                 = optional(string)<br/>    pages_path                  = optional(string)<br/>    topics                      = optional(list(string))<br/>    teams                       = optional(map(string)) # team name -> permission (pull, push, maintain, admin)<br/><br/>    archived           = optional(bool) # GitHub cannot unarchive via the API; this is one-way<br/>    archive_on_destroy = optional(bool) # defaults to true: removing a repo from the map archives it<br/>  }))</pre> | `{}` | no |
+| <a name="input_repositories"></a> [repositories](#input\_repositories) | Map of GitHub Repos to Create | <pre>map(object({<br/>    description          = optional(string)<br/>    default_branch       = optional(string) # unmanaged when unset; the branch must already exist<br/>    homepage_url         = optional(string)<br/>    visibility           = optional(string)<br/>    has_issues           = optional(bool)<br/>    has_projects         = optional(bool)<br/>    has_wiki             = optional(bool)<br/>    gitignore_template   = optional(string)<br/>    license_template     = optional(string)<br/>    vulnerability_alerts = optional(bool)<br/><br/>    allow_auto_merge            = optional(bool)<br/>    allow_merge_commit          = optional(bool)<br/>    allow_rebase_merge          = optional(bool)<br/>    allow_squash_merge          = optional(bool)<br/>    delete_branch_on_merge      = optional(bool)<br/>    squash_merge_commit_title   = optional(string)<br/>    squash_merge_commit_message = optional(string)<br/>    pages                       = optional(bool)<br/>    pages_cname                 = optional(string)<br/>    pages_path                  = optional(string)<br/>    topics                      = optional(list(string))<br/>    teams                       = optional(map(string)) # team name -> permission (pull, push, maintain, admin)<br/>    collaborators               = optional(map(string)) # username -> permission (pull, triage, push, maintain, admin)<br/><br/>    archived           = optional(bool) # GitHub cannot unarchive via the API; this is one-way<br/>    archive_on_destroy = optional(bool) # defaults to true: removing a repo from the map archives it<br/>  }))</pre> | `{}` | no |
 | <a name="input_settings"></a> [settings](#input\_settings) | Map of GitHub Organization Settings | <pre>object({<br/>    billing_email    = optional(string)<br/>    blog             = optional(string)<br/>    company          = optional(string)<br/>    description      = optional(string)<br/>    email            = optional(string)<br/>    location         = optional(string)<br/>    name             = optional(string)<br/>    twitter_username = optional(string)<br/><br/>    has_organization_projects = optional(bool)<br/>    has_repository_projects   = optional(bool)<br/><br/>    default_repository_permission            = optional(string)<br/>    members_can_create_internal_repositories = optional(bool)<br/>    members_can_create_pages                 = optional(bool)<br/>    members_can_create_private_pages         = optional(bool)<br/>    members_can_create_private_repositories  = optional(bool)<br/>    members_can_create_public_pages          = optional(bool)<br/>    members_can_create_public_repositories   = optional(bool)<br/>    members_can_create_repositories          = optional(bool)<br/>    members_can_fork_private_repositories    = optional(bool)<br/>    web_commit_signoff_required              = optional(bool)<br/><br/>    advanced_security_enabled_for_new_repositories               = optional(bool)<br/>    dependabot_alerts_enabled_for_new_repositories               = optional(bool)<br/>    dependabot_security_updates_enabled_for_new_repositories     = optional(bool)<br/>    dependency_graph_enabled_for_new_repositories                = optional(bool)<br/>    secret_scanning_enabled_for_new_repositories                 = optional(bool)<br/>    secret_scanning_push_protection_enabled_for_new_repositories = optional(bool)<br/><br/>  })</pre> | `null` | no |
 | <a name="input_teams"></a> [teams](#input\_teams) | Map of GitHub Teams to Create | <pre>map(object({<br/>    description    = optional(string)<br/>    privacy        = optional(string)<br/>    parent_team_id = optional(string)<br/><br/>    maintainers = optional(list(string))<br/>    members     = optional(list(string))<br/>  }))</pre> | `{}` | no |
 | <a name="input_token"></a> [token](#input\_token) | GitHub Personal Access Token | `string` | n/a | yes |
@@ -57,6 +59,7 @@ No modules.
 | <a name="output_name"></a> [name](#output\_name) | GitHub Organization Name |
 | <a name="output_organization"></a> [organization](#output\_organization) | GitHub Organization Resource |
 | <a name="output_organization_teams"></a> [organization\_teams](#output\_organization\_teams) | GitHub Organization Team Resource |
+| <a name="output_outside_collaborators"></a> [outside\_collaborators](#output\_outside\_collaborators) | GitHub Organization Outside Collaborators |
 | <a name="output_plan"></a> [plan](#output\_plan) | GitHub Organization Plan |
 | <a name="output_private_repositories"></a> [private\_repositories](#output\_private\_repositories) | GitHub Organization Private Repositories |
 | <a name="output_public_repositories"></a> [public\_repositories](#output\_public\_repositories) | GitHub Organization Public Repositories |
@@ -65,6 +68,7 @@ No modules.
 | <a name="output_team_resources"></a> [team\_resources](#output\_team\_resources) | GitHub Organization Team Resources |
 | <a name="output_teams"></a> [teams](#output\_teams) | GitHub Organization Teams |
 | <a name="output_unmanaged_members"></a> [unmanaged\_members](#output\_unmanaged\_members) | GitHub Organization Unmanaged Members |
+| <a name="output_unmanaged_outside_collaborators"></a> [unmanaged\_outside\_collaborators](#output\_unmanaged\_outside\_collaborators) | GitHub Organization Unmanaged Outside Collaborators |
 | <a name="output_unmanaged_repositories"></a> [unmanaged\_repositories](#output\_unmanaged\_repositories) | GitHub Organization Unmanaged Repositories |
 | <a name="output_unmanaged_teams"></a> [unmanaged\_teams](#output\_unmanaged\_teams) | GitHub Organization Unmanaged Teams |
 <!-- END_TF_DOCS -->
@@ -80,6 +84,41 @@ Setting it on an existing repository needs no import. If the live default
 branch already matches, the first apply records it without changing anything.
 Unsetting it later only stops managing the branch; the repository is left as
 it is.
+
+## Collaborators
+
+`collaborators` on a repository maps a GitHub username to a permission
+(`pull`, `triage`, `push`, `maintain`, `admin`, or a custom repository role),
+managed with `github_repository_collaborator`:
+
+```hcl
+repositories = {
+  some-repo = {
+    teams         = { developers = "push" }
+    collaborators = { contractor-login = "push" }
+  }
+}
+```
+
+Adding someone who is not yet a collaborator sends them an email invitation
+that expires after 7 days. An expired invitation shows up as drift on the next
+plan, and the apply sends a new one.
+
+The `outside_collaborators` output lists the organization's outside
+collaborators, and `unmanaged_outside_collaborators` lists the ones not set on
+any repository in the map. On paid plans an outside collaborator on a private
+repository uses a seat, so check this output for stale accounts. Both outputs
+read only the first 100 outside collaborators.
+
+To bring a hand-written `github_repository_collaborator` under the module
+without revoking and re-sending the invitation, move it in state:
+
+```hcl
+moved {
+  from = github_repository_collaborator.outside["<key>"]
+  to   = module.organization.github_repository_collaborator.collaborator["<repo>:<username>"]
+}
+```
 
 ## Upgrading from v1.0.10 or earlier
 
