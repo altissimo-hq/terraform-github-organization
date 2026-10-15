@@ -61,6 +61,11 @@ output "organization_teams" {
   value       = data.github_organization_teams.org
 }
 
+output "outside_collaborators" {
+  description = "GitHub Organization Outside Collaborators"
+  value       = local.outside_collaborators
+}
+
 output "plan" {
   description = "GitHub Organization Plan"
   value       = data.github_organization.org.plan
@@ -99,6 +104,11 @@ output "team_resources" {
 output "unmanaged_members" {
   description = "GitHub Organization Unmanaged Members"
   value       = sort(setsubtract(local.members, concat(var.admins, var.members)))
+}
+
+output "unmanaged_outside_collaborators" {
+  description = "GitHub Organization Unmanaged Outside Collaborators"
+  value       = sort(setsubtract(local.outside_collaborators, distinct([for c in values(local.repository_collaborators) : c.username])))
 }
 
 output "unmanaged_repositories" {
