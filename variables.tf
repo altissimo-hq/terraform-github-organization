@@ -38,6 +38,7 @@ variable "repositories" {
     squash_merge_commit_message = optional(string)
     pages                       = optional(bool)
     pages_cname                 = optional(string)
+    pages_https_enforced        = optional(bool) # unmanaged when unset; requires pages_cname
     pages_path                  = optional(string)
     topics                      = optional(list(string))
     teams                       = optional(map(string)) # team name -> permission (pull, push, maintain, admin)
@@ -47,6 +48,11 @@ variable "repositories" {
     archive_on_destroy = optional(bool) # defaults to true: removing a repo from the map archives it
   }))
   default = {}
+
+  validation {
+    condition     = alltrue([for repo in values(var.repositories) : repo.pages_https_enforced == null || repo.pages_cname != null])
+    error_message = "pages_https_enforced requires pages_cname: GitHub always serves <org>.github.io over HTTPS."
+  }
 }
 
 variable "settings" {
