@@ -75,6 +75,8 @@ resource "github_repository_pages" "repo" {
   repository = github_repository.repo[each.key].name
   build_type = "legacy"
   cname      = each.value.pages_cname
+  # Optional and computed in the provider, so null leaves the live setting alone.
+  https_enforced = each.value.pages_https_enforced
 
   source {
     branch = coalesce(each.value.default_branch, "main")
