@@ -26,9 +26,13 @@ resource "github_repository" "repo" {
   allow_auto_merge       = coalesce(each.value.allow_auto_merge, false)
   delete_branch_on_merge = coalesce(each.value.delete_branch_on_merge, false)
 
-  allow_merge_commit          = coalesce(each.value.allow_merge_commit, true)
-  allow_rebase_merge          = coalesce(each.value.allow_rebase_merge, true)
-  allow_squash_merge          = coalesce(each.value.allow_squash_merge, true)
+  allow_merge_commit = coalesce(each.value.allow_merge_commit, true)
+  allow_rebase_merge = coalesce(each.value.allow_rebase_merge, true)
+  allow_squash_merge = coalesce(each.value.allow_squash_merge, true)
+
+  # These defaults differ from GitHub's (COMMIT_OR_PR_TITLE / COMMIT_MESSAGES).
+  # Passing null does not leave them unmanaged: provider 6.13 applies GitHub's
+  # defaults, so every repo applied with v1.0.14 or later would flip back.
   squash_merge_commit_title   = coalesce(each.value.squash_merge_commit_title, "PR_TITLE")
   squash_merge_commit_message = coalesce(each.value.squash_merge_commit_message, "PR_BODY")
 
