@@ -34,8 +34,8 @@ variable "repositories" {
     allow_rebase_merge          = optional(bool)
     allow_squash_merge          = optional(bool)
     delete_branch_on_merge      = optional(bool)
-    squash_merge_commit_title   = optional(string)
-    squash_merge_commit_message = optional(string)
+    squash_merge_commit_title   = optional(string) # defaults to PR_TITLE (GitHub's own default is COMMIT_OR_PR_TITLE)
+    squash_merge_commit_message = optional(string) # defaults to PR_BODY (GitHub's own default is COMMIT_MESSAGES)
     pages                       = optional(bool)
     pages_cname                 = optional(string)
     pages_https_enforced        = optional(bool) # unmanaged when unset; requires pages_cname
